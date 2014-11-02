@@ -7,8 +7,14 @@
 
     <title>Just Decide &ndash; </title>
 
-<link rel="stylesheet" href="http://yui.yahooapis.com/pure//pure.css">
 
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure//pure.css">
+<script src="js/nothing.js"></script>
+<script type="text/javascript" src="libs/icanhaz/ICanHaz.js"></script>
+<script type="text/javascript" src='libs/jquery/dist/jquery.js'></script>
+<script type="text/javascript" src='libs/sheetsee/js/sheetsee.js'></script>
+<script type="text/javascript" src='libs/tabletop/src/tabletop.js'></script>
+<script src="js/site.js"></script>
 <!--[if lte IE 8]>
 
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure//grids-responsive-old-ie.css">
@@ -49,7 +55,11 @@
     <div class="splash">
         <h1 class="splash-head">What are you looking for?</h1>
         <p class="splash-subhead">
-            Enter in what you need. We'll give you a answer.
+        <div id="filters" class="container">
+          <input id="toolSearch" type="search" placeholder="hammer.."></input>
+          <span class="clear sml-button">Clear</span>
+          <span id="showAvailable" class="sml-button">Show Available</span>
+        </div>
         </p>
         <p>
             <button class="pure-button pure-button-active">Pick for Me</button>
@@ -58,33 +68,45 @@
 </div>
 
 <div class="content-wrapper">
-    <div class="content"  style="display:none">
-        <h2 class="content-head is-center">Excepteur sint occaecat cupidatat.</h2>
-    </div>
 
     <div class="ribbon l-box-lrg pure-g">
         <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
 
-            <h2 class="content-head content-head-ribbon">Laboris nisi ut aliquip.</h2>
-
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor.
-            </p>
+<div id="tools" class="container"><span class="flash animated">LOADING...</span></div>
         </div>
     </div>
-
-    <div class="footer l-box is-center">
-        View the source of this layout to learn more. Made with love by the YUI Team.
-    </div>
-
 </div>
 
 <!-->jquery</!-->
-<script src="libs/jquery/dist/jquery.min.js"></script>
+<script id="tools" type="text/html">
+{{#rows}}
+<div id="{{rowNumber}}" class="tool-box {{#checkedout}}not-{{/checkedout}}available">
+  <span class="tool-box-tool">{{tool}}</span>
+  <div class="tool-box-bottom {{rowNumber}}">
+    {{#checkedout}} <span class="tool-box-borrowed">ON LOAN</span>{{/checkedout}}
+    {{^checkedout}}<a href="mailto:{{owneremail}}?subject=Tool Lending: {{tool}}"><span class="tool-box-borrow btn">BORROW</span></a>{{/checkedout}}
+    <ul>
+      <li><small>WHO / WHERE : </small></li>
+      <li><a href="mailto:{{owneremail}}">{{owner}}</a></li>
+      <li>{{street}}, {{city}}, {{state}}</li>
+      <li><a href="https://maps.google.com/maps?q={{street}},{{city}},{{state}}" target="_blank"><small>MAP</small></a></li>
+      {{#tooldetails}}
+      <li><small>NOTES : </small>{{tooldetails}}</li>
+      {{/tooldetails}}
+    </ul>
+  </div>
+</div>
+{{/rows}}
+</script>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    var URL = "0AvFUWxii39gXdGxhcjhzYzlBX2pyVFZZU2VjZ3BHZ3c"
+    Tabletop.init( { key: URL, callback: drawToolBox, simpleSheet: true } )
+  })
+</script>
 <script src="js/app.js"></script>
+
 
 </body>
 </html>
